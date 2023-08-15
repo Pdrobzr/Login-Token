@@ -4,8 +4,10 @@ const bodyParser = require('body-parser');
 const connect = require('./models/connect');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const salt = 10;
 
@@ -38,14 +40,19 @@ app.post('/login', async (req, res) => {
         if(bcrypt.compareSync(senha, senhaHash)){
             const id = execute[0].id_usuario;
             const token = jwt.sign({ id }, secret, { expiresIn: '1h' });
-            res.json({token});
+            res.json({message:'Logado com sucesso!', token});
         } else {
-            res.status(401).json({message: 'Informações inválidas!'});
+            res.status(400).json();
         }
     } else {
-        res.status(401).json({message: 'Informações inválidas!'});
+        res.status(400).json();
     }
 
+})
+
+app.get('/usuarios' , async (req, res) => {
+    const [query] = await connect.execute("SELECT * FROM usuarios");
+    res.json(query);
 })
 
 
@@ -67,7 +74,6 @@ const verifyToken = (req, res, next) => {
 app.get('/data', verifyToken, (req, res) => {
     res.json({message: 'Página protegida!'});
 })
-
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`))
 
