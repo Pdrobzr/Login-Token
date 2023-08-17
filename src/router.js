@@ -1,0 +1,17 @@
+const express = require('express');
+const usuariosController = require('./controllers/usuariosController');
+const verificarToken = require('./middlewares/verificarToken');
+
+const router = express.Router();
+
+router.post('/registrar' , usuariosController.registrarUsuario);
+
+router.post('/login', usuariosController.autenticarUsuario);
+
+router.get('/usuarios' , usuariosController.listarUsuarios);
+
+// router.get('/data' , verificarToken)
+
+router.delete('/usuarios/:id', usuariosController.deletarUsuario);
+
+module.exports = router;
