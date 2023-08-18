@@ -17,7 +17,7 @@ const registrarUsuario = async (nome, email, senha) => {
     }
 }
 
-const autenticarUsuario = async (email, senha) => {
+const autenticarUsuario = async (email) => {
     const [execute] = await connect.execute("SELECT * FROM usuarios WHERE nm_email = ?", [email]);
     return execute;
 }
@@ -47,7 +47,6 @@ const selecionarUsuario = async (id) => {
     const [execute] = await connect.execute(query, [id]);
     return execute;
 }
-
 
 module.exports = {
     listarUsuarios,

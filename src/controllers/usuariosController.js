@@ -22,7 +22,7 @@ const autenticarUsuario = async (req, res) => {
         if (bcrypt.compareSync(senha, senhaHash)) {
             const id = autenticarUsuario[0].id_usuario;
             const token = jwt.sign({ id }, secret, { expiresIn: '1h' });
-            res.json({ message: 'Logado com sucesso!', token, });
+            res.json({ message: 'Logado com sucesso!', token, id});
         } else {
             res.status(400).json();
         }
