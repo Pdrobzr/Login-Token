@@ -14,4 +14,8 @@ router.get('/data' , verificarToken , (_req, res) => res.json({message: 'Página
 
 router.delete('/usuarios/:id', usuariosController.deletarUsuario);
 
+router.put('/usuarios/:id', usuariosController.editarUsuario);
+
+router.get('/usuario/:id' , usuariosController.selecionarUsuario);
+
 module.exports = router;

@@ -32,10 +32,28 @@ const deletarUsuario = async (id) => {
     }
 }
 
+const editarUsuario = async (id, nome, email) => {
+    const query = "UPDATE usuarios SET nm_usuario = ?, nm_email = ? WHERE id_usuario = ?";
+    const [execute] = await connect.execute(query, [nome, email, id]);
+    if(execute.affectedRows > 0){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+const selecionarUsuario = async (id) => {
+    const query = "SELECT * FROM usuarios WHERE id_usuario = ?";
+    const [execute] = await connect.execute(query, [id]);
+    return execute;
+}
+
 
 module.exports = {
     listarUsuarios,
     registrarUsuario,
     autenticarUsuario,
-    deletarUsuario
+    deletarUsuario,
+    editarUsuario,
+    selecionarUsuario
 }

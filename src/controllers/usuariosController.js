@@ -12,7 +12,7 @@ const listarUsuarios = async (req, res) => {
     } else {
         res.json({ message: 'Não existem usuários cadastrados!' });
     }
-};
+}
 
 const autenticarUsuario = async (req, res) => {
     const { email, senha } = req.body;
@@ -22,7 +22,7 @@ const autenticarUsuario = async (req, res) => {
         if (bcrypt.compareSync(senha, senhaHash)) {
             const id = autenticarUsuario[0].id_usuario;
             const token = jwt.sign({ id }, secret, { expiresIn: '1h' });
-            res.json({ message: 'Logado com sucesso!', token });
+            res.json({ message: 'Logado com sucesso!', token, });
         } else {
             res.status(400).json();
         }
@@ -54,9 +54,31 @@ const deletarUsuario = async (req, res) => {
     }
 }
 
+const editarUsuario = async (req, res) => {
+    const { id } = req.params;
+    const {nome, email} = req.body;
+    const editarUsuario = await usuariosModel.editarUsuario(id, nome, email);
+    if(editarUsuario === true){
+        res.json({message: 'Informações editadas com sucesso!'});
+    } else {
+        res.status(400).json();
+    }
+
+}
+
+const selecionarUsuario = async (req, res) => {
+    const { id } = req.params;
+    const selecionarUsuario = await usuariosModel.selecionarUsuario(id);
+    const nome = selecionarUsuario[0].nm_usuario;
+    const email = selecionarUsuario[0].nm_email;
+    res.json({nome: nome, email: email});
+}
+
 module.exports = {
     listarUsuarios,
     registrarUsuario,
     autenticarUsuario,
-    deletarUsuario
+    deletarUsuario,
+    editarUsuario,
+    selecionarUsuario
 };
